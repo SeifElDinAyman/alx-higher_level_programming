@@ -1,17 +1,32 @@
 #!/usr/bin/python3
-"""A script that
-- takes in a URL
-- sends a request to the URL
-- displays the body of the response.
 """
+This script fetches internet resources using the requests package.
+It demonstrates how to make HTTP GET requests, decode the response,
+and manipulate data from an external service.
+"""
+
 import requests
 
-if __name__ == "__main__":
-    url = sys.argv[1]
+def fetch_url(url):
+    """
+    Fetches and prints the content of a URL.
     
-	url = 'https://alx-intranet.hbtn.io/status'
-	response = requests.get(url)
+    Args:
+        url (str): The URL to fetch.
+    """
+    try:
+        response = requests.get(url)
+        response.raise_for_status()  # Raise an exception for HTTP errors
+        content_type = response.headers.get('content-type', 'Unknown')
+        
+        print("Body response:")
+        print(f"\t- type: {type(response.text)}")
+        print(f"\t- content: {content_type}\n")
+        print(response.text)
+    except requests.exceptions.RequestException as e:
+        print(f"An error occurred: {e}")
 
-	print("Body response:")
-	print("\t- type:", type(response.text))
-	print("\t- content:", response.text)
+if __name__ == "__main__":
+    url_to_fetch = 'https://alx-intranet.hbtn.io/status'
+    fetch_url(url_to_fetch)
+
